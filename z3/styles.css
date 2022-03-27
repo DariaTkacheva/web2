@@ -1,0 +1,25 @@
+body{
+    font-size:16px;
+    font-family: 'Times New Roman', serif;
+    align-content: center
+}
+
+.submit{
+    width: 50%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    border-radius: 20px; 
+    background-color: rgb(255, 255, 255);
+
+}
+.fon1{ 
+    width: 70%; 
+    margin: auto;
+    background-color: #795079;
+    border: 2px solid #000000;
+}
