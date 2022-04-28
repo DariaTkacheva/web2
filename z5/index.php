@@ -92,8 +92,18 @@ if(!empty($_COOKIE['super_value'])) {
   if (!empty($_COOKIE[session_name()]) &&
   session_start() && !empty($_SESSION['login'])) {
     try{
+      
+/*$sth = $db->prepare("SELECT id FROM users5");
+$sth->execute();
+$user_id = $sth->fetchAll(PDO::FETCH_COLUMN, 0);
+var_dump($user_id);
+die();*/
       $sth = $db->prepare("SELECT id FROM users5 WHERE login = ?");
       $sth->execute(array($_SESSION['login']));
+   //   var_dump($sth->fetchAll(PDO::FETCH_COLUMN, 0));
+//die();
+//var_dump($_SESSION['login']);
+//die();
       $user_id = ($sth->fetchAll(PDO::FETCH_COLUMN, 0))['0'];
       $sth = $db->prepare("SELECT * FROM application5 WHERE id = ?");
       $sth->execute(array($user_id));
