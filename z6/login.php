@@ -1,6 +1,13 @@
-<?php
-header('Content-Type: text/html; charset=UTF-8');
-function change_pass($db){session_start(); 
+<?php/**
+ * Файл login.php для не авторизованного пользователя выводит форму логина.
+ * При отправке формы проверяет логин/пароль и создает сессию,
+ * записывает в нее логин и id пользователя.
+ * После авторизации пользователь перенаправляется на главную страницу
+ * для изменения ранее введенных данных.
+ **/
+header('Content-Type: text/html; charset=UTF-8');// Отправляем браузеру правильную кодировку,
+// файл login.php должен быть в кодировке UTF-8 без BOM.
+function change_pass($db){session_start(); // Начинаем сессию.
   $login_ch = $_POST['user_login'];
   $old_pass = $_POST['old_pass'];
   $new_pass  =$_POST['new_pass'];
@@ -39,11 +46,12 @@ function change_pass($db){session_start();
   exit();
 }
 
-session_start();
+session_start();// Начинаем сессию.
 
 $db_user = 'u47541';
 $db_pass = '8900409';
-
+// В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
+// и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if(isset($_GET['do'])&&$_GET['do'] == 'logout'){
     session_start();    
@@ -76,7 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   }
 }
 
-else {
+else {// Иначе, если запрос был методом POST, т.е. нужно сделать авторизацию с записью логина в сессию.
+	 // TODO: Проверть есть ли такой логин и пароль в базе данных.
+  // Выдать сообщение об ошибках.
   $db = new PDO('mysql:host=localhost;dbname=u47541', $db_user, $db_pass, array(
     PDO::ATTR_PERSISTENT => true
   ));
@@ -85,6 +95,7 @@ else {
     if(isset($_GET['act'])&&$_GET['act'] == 'change_pass'){
       change_pass($db);
     }
+	  // Если все ок, то авторизуем пользователя.
     $login = $_POST['login'];
     $pass =  $_POST['pass'];
     
@@ -116,5 +127,5 @@ else {
     echo 'Error: ' . $e->getMessage();
     exit();
   }
-  header('Location: ./');
+  header('Location: ./');// Делаем перенаправление.
 }
