@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-  <?php 
+  <?php /* Сообщения об ошибках и поля с ошибками выводим с красным бордюром. */
 		if (!empty($messages)) {
 			if(isset($messages['save'])) print('<div id="messages" class="ok">'); else print('<div id="messages">');
 			foreach ($messages as $message) {
@@ -17,6 +17,8 @@
 		  print('</div>');
 		}
 	?>
+	  // Далее выводим форму отмечая элементы с ошибками классом error
+// и задавая начальные значения элементов ранее сохраненными.
    <div id="form">
     	<h1><b>Форма</b></h1>
 	<form action="" method="POST">
