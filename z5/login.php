@@ -16,7 +16,7 @@ $db_pass = '8900409';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {// В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
 // и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
-    if(isset($_GET['do'])&&$_GET['do'] == 'logout'){
+    if(isset($_GET['do'])&&$_GET['do'] == 'logout'){// выход из профиля
     session_start();    
     session_unset();
     session_destroy();
