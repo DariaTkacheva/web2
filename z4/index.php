@@ -1,15 +1,15 @@
 <?php
-header('Content-Type: text/html; charset=UTF-8');
+header('Content-Type: text/html; charset=UTF-8'); // Отправляем браузеру правильную кодировку
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  $messages = array();
+if ($_SERVER['REQUEST_METHOD'] == 'GET') { // В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP и другие сведения о клиненте и сервере
+  $messages = array(); // Массив для временного хранения сообщений пользователю
 
-  if (!empty($_COOKIE['save'])) {
-    setcookie('save', '', 100000);
-    $messages['save'] = 'Спасибо, результаты сохранены.';
+  if (!empty($_COOKIE['save'])) { // В суперглобальном массиве $_COOKIE PHP хранит все имена и значения куки текущего запроса
+    setcookie('save', '', 100000); // Удаляем куку, указывая время устаревания в прошлом
+    $messages['save'] = 'Спасибо, результаты сохранены.'; // Если есть параметр save
   }
-
+// Складываем признак ошибок в массив.
   $errors = array();
   $errors['name'] = !empty($_COOKIE['name_error']);
   $errors['email'] = !empty($_COOKIE['email_error']);
@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['super'] = !empty($_COOKIE['super_error']);
   $errors['info'] = !empty($_COOKIE['info_error']);
   $errors['check1'] = !empty($_COOKIE['check1_error']);
-
+  // Выдаем сообщения об ошибках.
   if ($errors['name']) {
-    setcookie('name_error', '', 100000);
+    setcookie('name_error', '', 100000); // Удаляем куку, указывая время устаревания в прошлом.
     $messages['name_message'] = '<div class="error">Заполните имя.<br>Поле может быть заполнено символами только русского или только английского алфавитов</div>';
   }
   if ($errors['email']) {
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('check1_error', '', 100000);
     $messages['check1_message'] = '<div class="error">Вы не можете отправить форму, не ознакомившись с контрактом</div>';
   }
-
+// Складываем предыдущие значения полей в массив, если есть.
   $values = array();
   $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
   $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
@@ -78,24 +78,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
     }
   }
-  include('form.php');
+  include('form.php');// Включаем содержимое файла form.php.
+  // В нем будут доступны переменные $messages, $errors и $values для вывода 
+  // сообщений, полей с ранее заполненными данными и признаками ошибок.
   
 }
-
+// Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
-  $errors = FALSE;
+  $errors = FALSE;   // Проверяем ошибки.
 // ИМЯ
 if (empty($_POST['name'])) {
     setcookie('name_error', ' ', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
   else if(!preg_match("/^[а-яё]|[a-z]$/iu", $_POST['name'])){
-    setcookie('name_error', $_POST['name'], time() + 24 * 60 * 60);
+    setcookie('name_error', $_POST['name'], time() + 24 * 60 * 60); // Выдаем куку на день с флажком об ошибке в поле name.
     $errors = TRUE;
   }
   else {
     // Сохраняем ранее введенное в форму значение на месяц.
-    setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
+    setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);// Сохраняем ранее введенное в форму значение на год.
   }
   // EMAIL
   if (empty($_POST['email'])){
@@ -170,10 +172,10 @@ if (empty($_POST['name'])) {
   }
 
   if ($errors) {
-    header('Location: index.php');
+    header('Location: index.php');  // При наличии ошибок перезагружаем страницу и завершаем работу скрипта.
     exit();
   }
-  else {
+  else {// Удаляем Cookies с признаками ошибок.
     setcookie('name_error', '', 100000);
     setcookie('email_error', '', 100000);
     setcookie('date_error', '', 100000);
@@ -183,12 +185,12 @@ if (empty($_POST['name'])) {
     setcookie('info_error', '', 100000);
     setcookie('check1_error', '', 100000);
   }
-
+ // Сохранение в базу данных.
   $user = 'u47541';
 $pass = '8900409';
 $db = new PDO('mysql:host=localhost;dbname=u47541', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
-
-try {
+// Подготовленный запрос. Не именованные метки.
+try {// Запись в таблицу application
   $stmt = $db->prepare("INSERT INTO application SET name = ?, email = ?, date = ?, pol = ?, konechn = ?, info = ?");
   $stmt -> execute(array(
 		$_POST['name'],
@@ -198,7 +200,7 @@ try {
         $_POST['konechn'],
         $_POST['info'],
 	));
-	
+	// Запись в таблицу Superpowers
   $stmt = $db->prepare("INSERT INTO Superpowers SET name = ?");
   $stmt -> execute(array(
 		$_POST['super'] = implode(', ', $_POST['super']),
@@ -209,7 +211,7 @@ catch(PDOException $e){
   exit();
 }
 
-  setcookie('save', '1');
+  setcookie('save', '1');// Сохраняем куку с признаком успешного сохранения.
 
-  header('Location: index.php');
+  header('Location: index.php');// Делаем перенаправление
 }
