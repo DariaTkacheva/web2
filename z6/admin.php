@@ -1,4 +1,11 @@
-<head>
+
+<head>/**
+ *Реализовать вход администратора с использованием
+ * HTTP-авторизации для просмотра и удаления результатов.
+ **/
+
+// PHP хранит логин и пароль в суперглобальном массиве $_SERVER.
+// Подробнее см. стр. 26 и 99 в учебном пособии Веб-программирование и веб-сервисы.
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
@@ -29,7 +36,7 @@ if (empty($_SERVER['PHP_AUTH_USER']) ||
 }
 
 print('Вы успешно авторизовались и видите защищенные паролем данные.<br>');
-
+// успешно авторизовались и видим защищенные паролем данные
 function show_tables($db){
   $sql = 'SELECT  application6.*, 
                     SuperDef.name as power,
@@ -163,7 +170,7 @@ function errors(){
 }
 function delete_user($db, $del){
   try{
-    $sth = $db->prepare("DELETE FROM application6 WHERE id = ?");
+    $sth = $db->prepare("DELETE FROM application6 WHERE id = ?");// Обновление данных в таблице
     $sth->execute(array($del));
     $sth = $db->prepare("DELETE FROM Superpowers6 WHERE id = ?");
     $sth->execute(array($del));
@@ -288,7 +295,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     </form>
     <?php
      }
-  else if(isset($_GET['act'])&&$_GET['act']=='delete_article'){
+  else if(isset($_GET['act'])&&$_GET['act']=='delete_article'){//удаляем пользователя
     ?>
     <form action="" method="post">
     <h4>Удалить пользователя c id=<?php print($_GET['delete_id']);?>?</h4>
