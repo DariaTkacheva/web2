@@ -25,7 +25,7 @@ function change_pass($db){session_start(); // Начинаем сессию.
       ));
       $_SESSION['login'] = $login_ch;
   }
-  else{
+  else{//обновление данных админа
     $stmt = $db->prepare("SELECT * FROM admin WHERE login = ?");
     $stmt->execute(array(
       $login_ch
@@ -91,7 +91,7 @@ else {// Иначе, если запрос был методом POST, т.е. н
     PDO::ATTR_PERSISTENT => true
   ));
 
-  try {
+  try {//авторизация за админа
     if(isset($_GET['act'])&&$_GET['act'] == 'change_pass'){
       change_pass($db);
     }
