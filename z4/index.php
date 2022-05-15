@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') { // В суперглобальном 
 	'mysli' => "Чтение мыслей",
   );
   
-  if(!empty($_COOKIE['super_value'])) {
+  if(!empty($_COOKIE['super_value'])) { //заполняет ячейку массива values для суперспособностей, если куки суперспособностей непустое
     $super_value = unserialize($_COOKIE['super_value']);
     foreach ($super_value as $s) {
       if (!empty($super[$s])) {
@@ -102,7 +102,7 @@ if (empty($_POST['name'])) {
   }
   else {
     // Сохраняем ранее введенное в форму значение на месяц.
-    setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);// Сохраняем ранее введенное в форму значение на год.
+    setcookie('name_value', $_POST['name'], time() + 30 * 24 * 60 * 60);
   }
   // EMAIL
   if (empty($_POST['email'])){
