@@ -229,7 +229,7 @@ function add_user($db){
     exit();
   }
 }
-function edit_user($db, $edit){
+function edit_user($db, $edit){ //редактировать пользователя
   try {
     $stmt = $db->prepare('SELECT * FROM application6 WHERE id=?');
     $stmt -> execute(array($edit));
@@ -275,7 +275,7 @@ function edit_user($db, $edit){
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
   show_tables($db);
-  if(isset($_GET['act'])&&$_GET['act']=='edit_article'){
+  if(isset($_GET['act'])&&$_GET['act']=='edit_article'){// кнопка редактирования пользователя 
     ?><form action="" method="post">
       <h4>Редактировать профиль с id=<?php print($_GET['edit_id']); ?></h4>
     <p>
@@ -285,7 +285,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     </form>
     <?php
   }
-  else if(isset($_GET['act'])&&$_GET['act']=='add_article'){
+  else if(isset($_GET['act'])&&$_GET['act']=='add_article'){// кнопка добавления пользователя
     ?><form action="" method="post">
       <h5>Добавить профиль</h5>
     <p>
@@ -295,7 +295,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     </form>
     <?php
      }
-  else if(isset($_GET['act'])&&$_GET['act']=='delete_article'){//удаляем пользователя
+  else if(isset($_GET['act'])&&$_GET['act']=='delete_article'){// кнопка удаления пользователя
     ?>
     <form action="" method="post">
     <h4>Удалить пользователя c id=<?php print($_GET['delete_id']);?>?</h4>
@@ -305,7 +305,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     }
 }
 else{
-  try {
+  try {// ошибка в удалении и тд
     if(!empty($_GET['delete_id'])){delete_user($db, $_GET['delete_id']);}
     if(!empty($_GET['edit_id']))if(!errors()){edit_user($db, $_GET['edit_id']);}
     if(isset($_GET['act'])&&$_GET['act']=='add_article'){add_user($db);}
