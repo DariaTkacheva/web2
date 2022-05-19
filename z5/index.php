@@ -89,17 +89,17 @@ header('Content-Type: text/html; charset=UTF-8');// Отправляем бра�
   );
   
 if(!empty($_COOKIE['super_value'])) { //заполняет ячейку массива values для суперспособностей, если куки суперспособностей непустое
-    $super_value = unserialize($_COOKIE['super_value']);
+    $super_value = unserialize($_COOKIE['super_value']); //Создаёт PHP-значение из хранимого представления
     foreach ($super_value as $s) {
       if (!empty($super[$s])) {
-          $values['super'][$s] = $s;
+          $values['super'][$s] = $s; 
       }
     }
   }
 
   if (!empty($_COOKIE[session_name()]) &&
-  session_start() && !empty($_SESSION['login'])) {// загрузить данные пользователя из БД
-    try{
+  session_start() && !empty($_SESSION['login'])) {// если произошла авторизация и сессия запущена, то загрузить данные пользователя из БД
+    try{ //данные записываются в форму после авторизации
       
 /*$sth = $db->prepare("SELECT id FROM users5");
 $sth->execute();
@@ -115,14 +115,14 @@ die();*/
       $user_id = ($sth->fetchAll(PDO::FETCH_COLUMN, 0))['0'];
       $sth = $db->prepare("SELECT * FROM application5 WHERE id = ?");
       $sth->execute(array($user_id));
-      $user_data = ($sth->fetchAll(PDO::FETCH_ASSOC))['0'];
+      $user_data = ($sth->fetchAll(PDO::FETCH_ASSOC))['0'];//берет все строки со всеми данными
 
       foreach ($user_data as $key=>$val){
         $values[$key] = $val;
       }
       $values['super'] = [];
       $super_value = unserialize($_COOKIE['super_value']);
-        foreach ($super_value as $s) {
+        foreach ($super_value as $s) { //запись новых данных
             if (!empty($super[$s])) {
                 $values['super'][$s] = $s;
             }
@@ -285,7 +285,7 @@ if (empty($_POST['name'])) {
         if($value == $login)
           $flag=false;
       }
-    }while($flag==false);
+    }while($flag==false); //проверка, чтобы сгенерированный новый пароль не совпадал с существующим
     $hash = password_hash((string)$pass, PASSWORD_BCRYPT);
     setcookie('login', $login);    // Сохраняем в Cookies.
     setcookie('pass', $pass);
