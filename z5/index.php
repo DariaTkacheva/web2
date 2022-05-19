@@ -88,7 +88,7 @@ header('Content-Type: text/html; charset=UTF-8');// Отправляем бра�
 	'4' => "4",
   );
   
-if(!empty($_COOKIE['super_value'])) {
+if(!empty($_COOKIE['super_value'])) { //заполняет ячейку массива values для суперспособностей, если куки суперспособностей непустое
     $super_value = unserialize($_COOKIE['super_value']);
     foreach ($super_value as $s) {
       if (!empty($super[$s])) {
