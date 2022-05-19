@@ -17,7 +17,7 @@ $db_pass = '8900409';
 $db = new PDO('mysql:host=localhost;dbname=u47541', $db_user, $db_pass, array(
     PDO::ATTR_PERSISTENT => true
 ));
-$login = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
+$login = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : ''; //если непустой $_SERVER, то логину присваивается значение $_SERVER, иначе пробел
 $stmt = $db->prepare("SELECT * FROM admin WHERE login = ?");
       $stmt->execute(array(
         $login
@@ -53,13 +53,13 @@ function show_tables($db){
   <caption>Data of users</caption> 
     <tr><th>id</th><th>name</th><th>email</th><th>date</th><th>pol</th><th>konechn</th><th>info</th><th>superpower</th><th>login</th><th colspan="3">action</th></tr>
   <?php
-	  foreach ($db->query($sql, PDO::FETCH_ASSOC) as $row) {
+	  foreach ($db->query($sql, PDO::FETCH_ASSOC) as $row) { //выводится вся инф-ия о пользователях
       print('<tr>');
       foreach ($row as $v){
         print('<td>'.$v. '</td>');
       }
       print('<td colspan="2"> <a href="?act=edit_article&edit_id='.$row["id"].'">edit</a></td>   ');print('<td> <a href="?act=delete_article&delete_id='.$row["id"].'">delete</a></td>');
-    } 
+    } // кнопка для удаления или редактирования
     print('</tr></table>');
     print('<td> <a href="?act=add_article">add</a></td><br>');
 
@@ -74,7 +74,7 @@ function show_tables($db){
     <caption>Statistics of Superpowers</caption> 
       <tr><th>superpower</th><th>number_of_users</th></tr>
     <?php
-    foreach ($db->query($sql, PDO::FETCH_ASSOC) as $row) {
+    foreach ($db->query($sql, PDO::FETCH_ASSOC) as $row) { //выводится количество пользователей суперспособности и суперспособность
       print('<tr>');
       foreach ($row as $k=>$v){
 	  	  print('<td>'.$v. '</td>');
