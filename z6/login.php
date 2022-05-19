@@ -7,17 +7,17 @@
  **/
 header('Content-Type: text/html; charset=UTF-8');// Отправляем браузеру правильную кодировку,
 // файл login.php должен быть в кодировке UTF-8 без BOM.
-function change_pass($db){session_start(); // Начинаем сессию.
+function change_pass($db){session_start(); // Начинаем сессию. //функция изменения пароля
   $login_ch = $_POST['user_login'];
   $old_pass = $_POST['old_pass'];
   $new_pass  =$_POST['new_pass'];
 
-  $stmt = $db->prepare("SELECT * FROM users6 WHERE login = ?");
+  $stmt = $db->prepare("SELECT * FROM users6 WHERE login = ?");// взяли логин и пароль
     $stmt->execute(array(
       $login_ch
     ));
   $user = $stmt->fetch();
-  if (password_verify($old_pass, $user['pass'])) {
+  if (password_verify($old_pass, $user['pass'])) { // если старый пароль совпадает с паролем из бд, то заменяем в бд на новый пароль
     $stmt = $db->prepare("UPDATE users6 SET pass = ? WHERE login = ?");
       $stmt -> execute(array(
           password_hash($new_pass, PASSWORD_BCRYPT),
@@ -26,12 +26,12 @@ function change_pass($db){session_start(); // Начинаем сессию.
       $_SESSION['login'] = $login_ch;
   }
   else{//обновление данных админа
-    $stmt = $db->prepare("SELECT * FROM admin WHERE login = ?");
+    $stmt = $db->prepare("SELECT * FROM admin WHERE login = ?"); //взяли логин и пароль
     $stmt->execute(array(
       $login_ch
     ));
     $admin = $stmt->fetch();
-    if ($old_pass==$admin['pass']||password_verify($old_pass, $admin['pass'])) {
+    if ($old_pass==$admin['pass']||password_verify($old_pass, $admin['pass'])) { //если старый пароль совпадает с паролем из бд, то заменяем в бд на новый пароль для админа
       $stmt = $db->prepare("UPDATE admin SET pass = ? WHERE login = ?");
       $stmt -> execute(array(
           password_hash($new_pass, PASSWORD_BCRYPT),
@@ -104,7 +104,7 @@ else {// Иначе, если запрос был методом POST, т.е. н
       $login
     ));
     $user = $stmt->fetch();
-    if (password_verify($pass, $user['pass'])) {
+    if (password_verify($pass, $user['pass'])) { //верность введенного пароля
       $_SESSION['login'] = $login;
     }
     else{
@@ -113,7 +113,7 @@ else {// Иначе, если запрос был методом POST, т.е. н
         $login
       ));
       $admin = $stmt->fetch();
-      if ($pass==$admin['pass']||password_verify($pass, $admin['pass'])) {
+      if ($pass==$admin['pass']||password_verify($pass, $admin['pass'])) { //проверка настоящего пароля админа
         header('Location: admin.php');
         exit();
       }
