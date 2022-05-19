@@ -16,16 +16,16 @@ $db_pass = '8900409';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {// В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
 // и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
-    if(isset($_GET['do'])&&$_GET['do'] == 'logout'){// выход из профиля
+    if(isset($_GET['do'])&&$_GET['do'] == 'logout'){// выход из профиля, если была нажата кнопка
     session_start();    
-    session_unset();
-    session_destroy();
-    setcookie ("PHPSESSID", "", time() - 3600, '/');
+    session_unset();//Удалить все переменные сессии
+    session_destroy();//удаляет сессию
+    setcookie ("PHPSESSID", "", time() - 3600);//айди сессии, прошедшее время
     header("Location: index.php");
     exit;}
 ?>
 
-<form action="" method="post">
+<form action="" method="post"> // панеля для ввода логина и пароля
   <p><label for="login">Логин </label><input name="login" /></p>
   <p><label for="pass">Пароль </label><input name="pass" /></p>
   <input type="submit" value="Войти" />
@@ -40,17 +40,17 @@ else {// Иначе, если запрос был методом POST, т.е. н
 // TODO: Проверть есть ли такой логин и пароль в базе данных.
   // Выдать сообщение об ошибках.
   $db = new PDO('mysql:host=localhost;dbname=u47541', $db_user, $db_pass, array(
-    PDO::ATTR_PERSISTENT => true
+    PDO::ATTR_PERSISTENT => true //постоянное соединение
   ));
 
-  try {
+  try { //получает строку из таблицы в бд по введеному логину
     $stmt = $db->prepare("SELECT * FROM users5 WHERE login = ?");
     $stmt->execute(array(
       $login
     ));
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(); //берет строку из таблицы с логином и паролем
     if (password_verify($pass, $user['pass'])) {
-      $_SESSION['login'] = $login;
+      $_SESSION['login'] = $login;//если пароль верный, то присваивается имя сессии
     }
     else {
       echo "Неверный логин или пароль";
