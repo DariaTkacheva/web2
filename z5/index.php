@@ -301,7 +301,7 @@ if (empty($_POST['name'])) {
           $_POST['info'],
         )
       );
-
+// Сохранение данных формы, логина и хеш md5() пароля в базу данных.
       $id_db = $db->lastInsertId();
       $stmt = $db->prepare("INSERT INTO Superpowers5 SET id = ?, superpowers = ?"); // Запись в таблицу Superpowers5
       foreach($_POST['super'] as $s){
